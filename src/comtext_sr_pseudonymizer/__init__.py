@@ -1,0 +1,1 @@
+from comtext_sr_pseudonymizer.main import run_anonymization

@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "comtext-sr-pseudonymizer"
+version = "0.5.2"
+authors = [
+  { name="Aleksandra Todorović", email="todorovic.aleksandra.1706@gmail.com" },
+  { name="dr Vuk Batanović", email="vukbatanovic@gmail.com" },
+
+]
+description = "Pseudonymization library for COMtext.SR"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"comtext_sr_pseudonymizer" = [
+    "data/*.tsv", 
+    "data/*.txt",
+    "data/*.pkl",
+    "data/lookup/*",
+    "data/replacement/*"
+]
+
+[project.scripts]
+comtext-sr-pseudonymizer = "comtext_sr_pseudonymizer.main:main"
