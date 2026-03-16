@@ -74,7 +74,7 @@ Biblioteka generiše dva izlazna fajla prilikom svakog izvršavanja. Prvi fajl s
 Ovo je glavni izlazni fajl. On zadržava strukturu ulaznog fajla, ali zamenjuje poverljive informacije pseudonimizovanim vrednostima.
 
 * **Format**: Tabulatorom razdvojen format sa 3 kolone (Redni broj tokena u rečenici, pseudonimizovan token, NER tag po IOB2 formatu).
-* **Metapodaci**: Svi originalni metapodaci (npr. # sent_id, # text) su sačuvani i modifikovani shodno unetim zamenskim vrednostima.
+* **Metapodaci**: Originalni metapodaci (# newdoc id, # sent_id, # text) su sačuvani i modifikovani shodno unetim zamenskim vrednostima.
 * **Logika**: Transformišu se samo tokeni koji pripadaju nekom imenovanom entitetu (B-X, I-X); tokeni sa oznakom "O" ostaju nepromenjeni.
 
 Primer izlaznog formata:
