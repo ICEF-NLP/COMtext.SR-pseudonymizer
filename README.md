@@ -70,7 +70,7 @@ comtext-sr-pseudonymizer --input ./data/my_text.conllu --output ./my_results --t
 ### Izlazni podaci
 Biblioteka generiše dva izlazna fajla prilikom svakog izvršavanja. Prvi fajl sadrži pseudonimizovane podatke, dok drugi sadrži spisak izvršenih zamena.
 
-#### 1. Pseudonimizovani tekst - **File:** `[TIMESTAMP].conllu`
+#### 1. Pseudonimizovani tekst - **File:** `[FILENAME]_[TIMESTAMP].conllu`
 Ovo je glavni izlazni fajl. On zadržava strukturu ulaznog fajla, ali zamenjuje poverljive informacije pseudonimizovanim vrednostima.
 
 * **Format**: Tabulatorom razdvojen format sa 3 kolone (Redni broj tokena u rečenici, pseudonimizovan token, NER tag po IOB2 formatu).
@@ -92,7 +92,7 @@ Primer izlaznog formata:
 9	Loznica	I-ADR
 ```
 
-#### 2. Spisak izvršenih zamena - **File:** `[TIMESTAMP]_replacements.tsv`
+#### 2. Spisak izvršenih zamena - **File:** `[FILENAME]_[TIMESTAMP]_replacements.tsv`
 Ovaj fajl služi kao izveštaj o mapiranju, omogućavajući direktno poređenje originalnih podataka sa generisanim zamenama.
 
 Struktura fajla:
