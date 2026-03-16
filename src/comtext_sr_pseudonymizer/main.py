@@ -39,8 +39,8 @@ def run_anonymization(input_filepath, results_folder="results", selected_entitie
     res_path = Path(results_folder)
     res_path.mkdir(parents=True, exist_ok=True)
     results_timestamp = datetime.now().strftime('%Y_%m_%d__%H_%M_%S')
-    results_intermed_path = res_path / f"{results_timestamp}_replacements.tsv"
-    results_conllu_path = res_path / f"{results_timestamp}.conllu"
+    results_intermed_path = res_path / f"{abs_input_path.stem}_{results_timestamp}_replacements.tsv"
+    results_conllu_path = res_path / f"{abs_input_path.stem}_{results_timestamp}.conllu"
 
     # 3. RESOURCE INITIALIZATION (Singletons) and timestamps
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")

@@ -31,6 +31,7 @@ def load_corpus(filepath):
             elif line.startswith("# text"):
                 sentence_text = line.split('=')[1].strip()
                 full_text_metadata.append({
+                    "doc_id": doc_id,
                     "sentence_order": sent_order,
                     "sentence_id": sent_id,
                     'text': sentence_text
@@ -192,10 +193,15 @@ def export_to_conllu(all_tokens: List[dict], all_metadata: List[dict], output_pa
         token_groups[sid].sort(key=lambda x: x['token_id'])
 
     with open(output_path, 'w', encoding='utf-8', buffering=65536) as f:
+        current_doc_id = None
         for sent in all_metadata:
             s_id = sent['sentence_id']
             s_text = sent['text']
+            d_id = sent['doc_id']
             
+            if d_id != current_doc_id:
+                f.write(f"# newdoc id = {d_id}\n")
+                current_doc_id = d_id
             f.write(f"# sent_id = {s_id}\n")
             f.write(f"# text = {s_text}\n")
             
@@ -214,6 +220,7 @@ def format_anonymized_text(text, entity_group):
     
     text = WHITESPACE_PAREN_OPEN_WHITESPACE.sub(' (', text)
     text = WHITESPACE_PAREN_CLOSE_WHITESPACE.sub(') ', text)
-    text = WHITESPACE_COMMA_WHITESPACE.sub(', ', text)
+    if entity_group != "MONEY":
+        text = WHITESPACE_COMMA_WHITESPACE.sub(', ', text)
 
     return WHITESPACE_SEQUENCE.sub(' ', text).strip()

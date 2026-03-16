@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "comtext-sr-pseudonymizer"
-version = "0.5.2"
+version = "0.5.5"
 authors = [
-  { name="Aleksandra Todorović", email="todorovic.aleksandra.1706@gmail.com" },
-  { name="dr Vuk Batanović", email="vukbatanovic@gmail.com" },
+  { name="Aleksandra Todorović", email="aleksandra.todorovic@ic.etf.bg.ac.rs" },
+  { name="dr Vuk Batanović", email="vuk.batanovic@ic.etf.bg.ac.rs" },
 
 ]
 description = "Pseudonymization library for COMtext.SR"

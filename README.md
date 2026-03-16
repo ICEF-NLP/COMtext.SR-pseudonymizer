@@ -80,15 +80,16 @@ Ovo je glavni izlazni fajl. On zadržava strukturu ulaznog fajla, ali zamenjuje 
 Primer izlaznog formata:
 ```text
 # sent_id = vA001-s1
-# text = DIFOVIT DOO ul. Lazara Lopičića 70 21480 Srbobran
-1	DIFOVIT	B-COM
-2	DOO	I-COM
-3	ul.	B-ADR
-4	Lazara	I-ADR
-5	Lopičića	I-ADR
-6	70	I-ADR
-7	21480	I-ADR
-8	Srbobran	I-ADR
+# text = DUTAN S DOO ul. Božidara Korkocića 82 15300 Loznica
+1	DUTAN	B-COM
+2	S	I-COM
+3	DOO	I-COM
+4	ul.	B-ADR
+5	Božidara	I-ADR
+6	Korkocića	I-ADR
+7	82	I-ADR
+8	15300	I-ADR
+9	Loznica	I-ADR
 ```
 
 #### 2. Spisak izvršenih zamena - **File:** `[TIMESTAMP]_replacements.tsv`
@@ -108,13 +109,13 @@ Struktura fajla:
 Primer formata:
 ```text
 doc_id	sentence_id	start_token_num	end_token_num	original_text	entity_group	anonymized_text
-vA001	vA001-s1	1	4	Trans Impex Trade d.o.o.	COM	DIFOVIT DOO
-vA001	vA001-s1	5	11	Bul. Vojvode Stepe 123/2 21000 Novi Sad	ADR	ul. Lazara Lopičića 70 21480 Srbobran
-vA001	vA001-s12	2	3	Novom Sadu	TOP	Srbobranu
-vA001	vA001-s12	5	9	dana 1. 2. 2011. godine	DATE	dana 03. 02. 2016. godine
-vA001	vA001-s3	12	18	Trans Impex Trade d.o.o. iz Novog Sada	COM	DIFOVIT DOO
-vA001	vA001-s3	21	22	Petar Petrović	PER	Jandre Medurić
-vA001	vA001-s3	24	25	Novog Sada	TOP	Srbobrana
+vA001	vA001-s1	1	4	Trans Impex Trade d.o.o.	COM	DUTAN S DOO
+vA001	vA001-s1	5	11	Bul. Vojvode Stepe 123/2 21000 Novi Sad	ADR	ul. Božidara Korkocića 82 15300 Loznica
+vA001	vA001-s12	2	3	Novom Sadu	TOP	Loznici
+vA001	vA001-s12	5	9	dana 1. 2. 2011. godine	DATE	dana 20. 03. 2007. godine
+vA001	vA001-s3	12	18	Trans Impex Trade d.o.o. iz Novog Sada	COM	DUTAN S DOO
+vA001	vA001-s3	21	22	Petar Petrović	PER	Nemanja Kolarski
+vA001	vA001-s3	24	25	Novog Sada	TOP	Loznice
 ```
 
 ## Autorstvo
