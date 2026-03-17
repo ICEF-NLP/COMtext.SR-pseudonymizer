@@ -64,8 +64,8 @@ class AddressAnonymizer(BaseAnonymizer):
             elif p.label == L_HOUSE: house_val = p.token
             
             if p.label in {L_ZIP, L_MUNI, L_CITY}:
-                if p.label == L_CITY: city_val = p.lemma.lower()
-                elif p.label == L_MUNI: muni_val = p.lemma.lower()
+                if p.label == L_CITY: city_val = p.lemma.lower().strip()
+                elif p.label == L_MUNI: muni_val = p.lemma.lower().strip()
                 found_geo_labels.add(p.label)
 
         # --- 2. SEEDING & BUNDLING ---
@@ -87,7 +87,13 @@ class AddressAnonymizer(BaseAnonymizer):
         # State object to track internal building logic (incremental floors/unique apts)
         state = {
             "current_floor": self.rng.randint(1, 20),
-            "used_apts": set()
+            "used_apts": set(),
+            "adr_map": {
+                "orig_city": city_val, 
+                "orig_muni": muni_val, 
+                "fake_city": "", 
+                "fake_muni": "" 
+            }
         }
 
         # Step 3: Iterate through parts and apply the mapped strategy
@@ -96,7 +102,16 @@ class AddressAnonymizer(BaseAnonymizer):
             if method:
                 # Mutate the token with the anonymized value
                 comp.token = method(comp, city_bundle, state)
-
+        
+        if city_bundle:
+            current_doc_mappings = self.data_manager.adr_mapping.get(doc_id, [])
+            exists = any(
+                m['orig_city'] == state['adr_map']['orig_city'] and 
+                m['orig_muni'] == state['adr_map']['orig_muni'] 
+                for m in current_doc_mappings
+            )
+            if not exists:
+                self.data_manager.adr_mapping.setdefault(doc_id, []).append(state['adr_map'])
         return grouped_parts
 
     def _format_number(self, number, msd):
@@ -146,14 +161,20 @@ class AddressAnonymizer(BaseAnonymizer):
     def _anon_city(self, comp, bundle, state):
         """Returns bundled city with correct grammar (MSD) or a random one."""
         if bundle:
-            return self.lex.get_wordform(bundle[0], comp.msd)
-        return self.lex.anonymize_city(comp.msd, self.city_rng)
-
+            city_lemma = bundle[0]
+        else:
+            city_lemma = self.lex.anonymize_city(comp.msd, self.city_rng, return_lemma=True)
+        state['adr_map']['fake_city'] = city_lemma
+        return self.lex.get_wordform(city_lemma, comp.msd)
+    
     def _anon_muni(self, comp, bundle, state):
         """Returns bundled municipality with correct grammar or a random one."""
         if bundle:
-            return self.lex.get_wordform(bundle[2], comp.msd)
-        return self.lex.anonymize_municipality(comp.msd, self.city_rng)
+            muni_lemma = bundle[2]
+        else:
+            muni_lemma = self.lex.anonymize_municipality(comp.msd, self.city_rng, return_lemma=True)
+        state['adr_map']['fake_muni'] = muni_lemma
+        return self.lex.get_wordform(muni_lemma, comp.msd)
 
     def _anon_country(self, comp, bundle, state):
         """Anonymizes country while maintaining correct case/MSD."""

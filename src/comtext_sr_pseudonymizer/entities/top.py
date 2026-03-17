@@ -61,6 +61,20 @@ class ToponymAnonymizer(BaseAnonymizer):
         # 5. EXECUTION:
         # Call the mapped Lexicon function with the extracted MSD to get a grammatically correct fake name.
         anonymized_entity = self._anonymizers[category](target_msd, self.rng)
+        entries = self.data_manager.adr_mapping[entity.doc_id]
+        current_lemma = full_lemma
+        found_fake = None
+        for entry in entries:
+            if current_lemma == entry['orig_muni']:
+                found_fake = entry['fake_muni']
+                break
+            elif current_lemma == entry['orig_city']:
+                found_fake = entry['fake_city']
+                break
+
+            if found_fake:
+                anonymized_entity = self.lex.get_wordform(found_fake, target_msd)
+               
         
         # Ensure 'Beograd' -> 'Kragujevac' (Proper Noun casing)
         return anonymized_entity.title()

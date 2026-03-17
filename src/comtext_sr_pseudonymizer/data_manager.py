@@ -1,4 +1,5 @@
 import csv
+from collections import defaultdict
 import random
 from typing import Set, List, Tuple
 
@@ -48,6 +49,7 @@ class DataManager:
         # --- GEOGRAPHIC TRIADS ---
         # Loads correlated City, ZIP, and Municipality data.
         self._load_pool(POOL_ADR_ZIP_PATH)
+        self.adr_mapping = defaultdict(list)
 
         self._initialized = True
 
@@ -119,6 +121,9 @@ class DataManager:
             return ("", "", "")
         city, zip_code, muni = rng.choice(self.pool_city_zip_muni)
         return str(city), str(zip_code), str(muni)
+    
+    def clear_mapping(self):
+        self.adr_mapping = defaultdict(list)
 
     # ==========================================
     # INTERNAL HELPERS

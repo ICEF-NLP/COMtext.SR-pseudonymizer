@@ -80,7 +80,7 @@ class Lex:
         return lemma
 
     # --- PSEUDONYMIZATION ENGINE (random lemma) ---
-    def _get_random_replacement(self, pool_key: str, msd: str, rng: random.Random) -> str:
+    def _get_random_replacement(self, pool_key: str, msd: str, rng: random.Random, return_lemma: bool = False) -> str:
         """
         Selects a random lemma from the specified pool and inflects it to match the 
         original context's grammatical case.
@@ -90,28 +90,32 @@ class Lex:
             return f"ERR_UNKNOWN_POOL_{pool_key}"
             
         random_lemma = rng.choice(pool)
+        if return_lemma:
+            return random_lemma
         return self.get_wordform(random_lemma, msd)
     
     # --- PUBLIC API WRAPPERS ---
     # These methods are called by specific Anonymizer classes (e.g., PersonAnonymizer)
     
-    def anonymize_surname(self, msd: str, rng: random.Random) -> str:
-        return self._get_random_replacement("surname", msd, rng)
+    def anonymize_surname(self, msd: str, rng: random.Random, return_lemma = False) -> str:
+        return self._get_random_replacement("surname", msd, rng, return_lemma)
     
-    def anonymize_female_name(self, msd: str, rng: random.Random) -> str:
-        return self._get_random_replacement("female", msd, rng)
+    def anonymize_female_name(self, msd: str, rng: random.Random, return_lemma = False) -> str:
+        return self._get_random_replacement("female", msd, rng, return_lemma)
     
-    def anonymize_male_name(self, msd: str, rng: random.Random) -> str:
-        return self._get_random_replacement("male", msd, rng)
+    def anonymize_male_name(self, msd: str, rng: random.Random, return_lemma = False) -> str:
+        return self._get_random_replacement("male", msd, rng, return_lemma)
     
-    def anonymize_city(self, msd: str, rng: random.Random) -> str:
-        return self._get_random_replacement("city", msd, rng)
+    def anonymize_city(self, msd: str, rng: random.Random, return_lemma = False) -> str:
+        return self._get_random_replacement("city", msd, rng, return_lemma)
     
-    def anonymize_municipality(self, msd: str, rng: random.Random) -> str:
-        return self._get_random_replacement("municipality", msd, rng)
+    def anonymize_municipality(self, msd: str, rng: random.Random, return_lemma = False) -> str:
+        return self._get_random_replacement("municipality", msd, rng, return_lemma)
     
-    def anonymize_country(self, msd: str, rng: random.Random) -> str:
-        return self._get_random_replacement("country", msd, rng)
+    def anonymize_country(self, msd: str, rng: random.Random, return_lemma = False) -> str:
+        return self._get_random_replacement("country", msd, rng, return_lemma)
+
+   #RETURNING RANDOM
     
     # --- DATA INTERNAL HELPERS ---
     def _get_cached_srlex(self):

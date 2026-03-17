@@ -588,9 +588,6 @@ class AddressParser:
                 
             elif lbl == self.adr_lex.COUNTRY_LABEL.name:
                 components[i].label = self.adr_lex.COUNTRY_VAL.name
-            
-            elif lbl == self.adr_lex.MUNI_LABEL.name:
-                components[i].label = self.adr_lex.MUNI_VAL.name
                 
             # SURVIVORSHIP RULE:
             # If a NUM_VAL survived all previous logic, it is likely an Apartment or Office number.

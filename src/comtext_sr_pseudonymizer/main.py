@@ -16,6 +16,7 @@ from comtext_sr_pseudonymizer.io_helper import (
     replace_with_anonymized_values
 )
 from comtext_sr_pseudonymizer.lex import Lex
+from pprint import pprint
 
 def run_anonymization(input_filepath, results_folder="results", selected_entities=None):
     """
@@ -57,7 +58,7 @@ def run_anonymization(input_filepath, results_folder="results", selected_entitie
     start = time.perf_counter()
     entity_result_list = []
     # Determine which entities to process (CLI filtered or all from map)
-    target_tags = selected_entities if selected_entities else ENTITY_MAP.keys()
+    target_tags = sorted(selected_entities) if selected_entities else ENTITY_MAP.keys()
     for tag in target_tags:
         config = ENTITY_MAP.get(tag)
         if not config:
@@ -87,6 +88,7 @@ def run_anonymization(input_filepath, results_folder="results", selected_entitie
         return
     
     end = time.perf_counter()
+    data_manager.clear_mapping()
     print(f"    anonymization took: {(end - start) * 1000:.2f} ms")
 
     # 5. RESULT SERIALIZATION
@@ -108,11 +110,15 @@ def run_anonymization(input_filepath, results_folder="results", selected_entitie
     if entity_result_list:
         with open(results_intermed_path, 'w', newline='', encoding='utf-8', buffering=65536) as f:
             writer = csv.writer(f, delimiter='\t')
-            writer.writerow(target_headers) # Write Header
+            writer.writerow(target_headers)
+            f.write('\n')
             
-            # 2. Write Rows
+            last_doc_id = None  
+
             for ent in entity_result_list:
-                # Convert object to a list of values in the correct order
+                if last_doc_id is not None and ent.doc_id != last_doc_id:
+                    f.write('\n') 
+                last_doc_id = ent.doc_id
                 row = [getattr(ent, h) for h in target_headers]
                 writer.writerow(row)
     
