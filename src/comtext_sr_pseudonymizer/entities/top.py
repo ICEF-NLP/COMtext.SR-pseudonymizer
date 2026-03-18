@@ -72,9 +72,8 @@ class ToponymAnonymizer(BaseAnonymizer):
                 found_fake = entry['fake_city']
                 break
 
-            if found_fake:
-                anonymized_entity = self.lex.get_wordform(found_fake, target_msd)
-               
+        if found_fake:
+            anonymized_entity = self.lex.get_wordform(found_fake, target_msd)
         
         # Ensure 'Beograd' -> 'Kragujevac' (Proper Noun casing)
         return anonymized_entity.title()
