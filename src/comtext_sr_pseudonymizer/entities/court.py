@@ -70,7 +70,20 @@ class CourtAnonymizer(BaseAnonymizer):
         self.rng.seed(seed_string)
         
         # 4. Generate the new token from the municipality pool using the morphological lexicon
-        new_token = self.lex.anonymize_municipality(target_msd, self.rng)
+        anonymized_entity = self.lex.anonymize_municipality(target_msd, self.rng)
+        entries = self.data_manager.adr_mapping[doc_id]
+        current_lemma = full_lemma
+        found_fake = None
+        for entry in entries:
+            if current_lemma == entry['orig_muni']:
+                found_fake = entry['fake_muni']
+                break
+            elif current_lemma == entry['orig_city']:
+                found_fake = entry['fake_city']
+                break
+
+        if found_fake:
+            anonymized_entity = self.lex.get_wordform(found_fake, target_msd)
         
         # Return as Title Case (e.g., 'Čačku')
-        return new_token.title()
+        return anonymized_entity.title()

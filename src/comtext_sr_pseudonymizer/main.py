@@ -130,6 +130,7 @@ def run_anonymization(input_filepath, results_folder="results", selected_entitie
     duration_ms = (end_time - start_time) * 1000
     print(f"    writing results took: {duration_ms:.2f} ms")
     print(f"=== EVERYTHING DONE === {datetime.now().strftime('%Y.%m.%d__%H:%M:%S')}")
+    return results_conllu_path, results_intermed_path
 
 
 def main():
