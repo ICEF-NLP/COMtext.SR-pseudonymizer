@@ -93,6 +93,7 @@ class AddressComponent:
     """
     An atomic unit of an address, holding both raw text and linguistic metadata.
     """
+    start_token: int
     label: str
     token: str
     lemma: str
@@ -110,6 +111,7 @@ class AddressComponent:
             An AddressComponent instance with an empty initial label.
         """
         return cls(
+            start_token = int(row.get("token_id", 0)),
             label="",
             token=str(row.get("token", "")),
             lemma=str(row.get("lemma", "")),
@@ -254,6 +256,7 @@ class AddressParser:
                 
                 # Part 1: The Category Label (e.g., "lamela")
                 tagged.append(AddressComponent(
+                    start_token= comp.start_token,
                     label=self.adr_lex.SECTION_LABEL.name,
                     token=parts[0],
                     lemma="lamela",
@@ -261,6 +264,7 @@ class AddressParser:
                 ))
                 # Part 2: The Specific Identifier (e.g., "A")
                 tagged.append(AddressComponent(
+                    start_token= comp.start_token+1,
                     label=self.adr_lex.SECTION_NUMBER.name,
                     token=parts[1],
                     lemma=parts[1].lower(),
@@ -486,21 +490,24 @@ class AddressParser:
             if components[i].label == self.adr_lex.UNKNOWN.name:
                 start_idx: int = i
                 group_lemmas: List[str] = []
+                group_word = List[str] = []
                 while i < len(components) and components[i].label == self.adr_lex.UNKNOWN.name:
                     group_lemmas.append(components[i].lemma.lower())
+                    group_word.append(components[i].token.lower())
                     i += 1
                 
                 candidate_str: str = " ".join(group_lemmas).strip()
+                candidate_str_word: str = " ".join(group_word).strip()
                 
                 # Default fallback is always STREET_VAL (most likely for unknown text)
                 possible_roles: List[str] = [self.adr_lex.STREET_VAL.name]
                 
                 # Check against data_manager for specific geographic identities
-                if self.data_manager.is_city(candidate_str):
+                if self.data_manager.is_city(candidate_str) or self.data_manager.is_city(candidate_str_word):
                     possible_roles.append(self.adr_lex.CITY_VAL.name)
-                if self.data_manager.is_municipality(candidate_str):
+                if self.data_manager.is_municipality(candidate_str) or self.data_manager.is_municipality(candidate_str_word):
                     possible_roles.append(self.adr_lex.MUNI_VAL.name)
-                if self.data_manager.is_country(candidate_str):
+                if self.data_manager.is_country(candidate_str) or self.data_manager.is_country(candidate_str_word):
                     possible_roles.append(self.adr_lex.COUNTRY_VAL.name)
                 
                 islands.append({
@@ -613,6 +620,7 @@ class AddressParser:
             if not grouped or grouped[-1].label != comp.label:
                 # We instantiate a new object to avoid side-effects on the original stream
                 grouped.append(AddressComponent(
+                    start_token= comp.start_token,
                     token=comp.token,
                     lemma=comp.lemma,
                     msd=comp.msd,

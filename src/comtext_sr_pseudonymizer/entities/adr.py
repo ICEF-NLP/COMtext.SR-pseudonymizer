@@ -127,7 +127,10 @@ class AddressAnonymizer(BaseAnonymizer):
     def _anon_street(self, comp, bundle, state):
         """Generates a random street name from the pool."""
         fake_name = self.data_manager.get_random_street(self.rng)
-        full_street = f"ul. {fake_name}"
+        if comp.start_token == 1:
+            full_street = f"Ul. {fake_name}"
+        else:
+            full_street = f"ul. {fake_name}"
         # Cleanup extra whitespace or commas
         return " ".join(full_street.replace(',', ' ,').split())
 
