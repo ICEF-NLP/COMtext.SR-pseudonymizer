@@ -490,7 +490,7 @@ class AddressParser:
             if components[i].label == self.adr_lex.UNKNOWN.name:
                 start_idx: int = i
                 group_lemmas: List[str] = []
-                group_word = List[str] = []
+                group_word: List[str] = []
                 while i < len(components) and components[i].label == self.adr_lex.UNKNOWN.name:
                     group_lemmas.append(components[i].lemma.lower())
                     group_word.append(components[i].token.lower())

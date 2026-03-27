@@ -90,7 +90,6 @@ Cmiljka
 Cveta
 Cvetana
 Cvetanka
-Cvija
 Cvijeta
 Dafina
 Dajana
@@ -631,7 +630,6 @@ Sandra
 Sanela
 Sanja
 Sara
-Sava
 Saveta
 Savetka
 Savica
@@ -879,7 +877,6 @@ Zvonka
 Đinka
 Đokoslava
 Đorđina
-Đuka
 Đulijana
 Đurica
 Đurisava
