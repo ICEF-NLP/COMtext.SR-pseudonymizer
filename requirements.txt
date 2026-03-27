@@ -1,0 +1,3 @@
+streamlit
+comtext-sr-pseudonymizer >= 0.5.12
+cyrtranslit
